@@ -17,8 +17,9 @@ Publication: Jackson, L. E., Daniel, J., McCorkle, B., Sears, A., & Bush, K. F. 
 
 ## Contact
 
-U.S. Environmental Protection Agency, Durham, NC 27709
+U.S. Environmental Protection Agency
 Office of Research and Development
+Durham, NC 27709
 https://www.epa.gov/enviroatlas/forms/contact-us-about-enviroatlas
 
 
@@ -29,6 +30,7 @@ originally designed by **Eric S. Hall (EPA)** and developed in conjunction with 
 Publication: Hall, E.S., 2017. A Decision Support Tool for Sustainable Land Use, Transportation, Buildings/Infrastructure, and Materials Management. _American Journal of Environmental Engineering_, _7_(2), pp.35-46. doi: 10.5923/j.ajee.20170702.02
 
 **Jeremy Baynes (EPA)** -- *Custom appearance and functionality*
+
 **Lorencio Connor (Student Services Contractor)** -- *Custom appearance and functionality*
 
 ## License
