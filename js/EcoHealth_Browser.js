@@ -10,14 +10,14 @@ function OTIEBrowser(title,graphToUse,startNode,bibliographyLink){
     
     this.checkGraph();
     
-    this.currentNodeID=-1;
+    /*this.currentNodeID=-1;
     this.previousNodeID=this.currentNodeID;
     if(this.getCookie("previousNodeID")){
         this.currentNodeID=parseInt(this.getCookie("previousNodeID"));
     }
     if(this.getCookie("currentNodeID")){
         startNode=parseInt(this.getCookie("currentNodeID"));
-    }
+    }*/
 
     this.setID("OTIEBrowser");
     
