@@ -866,6 +866,7 @@ OTIEBrowser.prototype.oldObjectMotion = function(guiObject,radians,level){
     
     d3Object=d3.select(guiObject);
     var selectedObjectCircle = d3Object.selectAll(".nodecircle");
+    d3.select(selectedObjectCircle.node().parentNode).attr('cursor', 'pointer');
     selectedObjectCircle.transition("shrink").duration(this.transitionTime).attr("r",this.edgeSize);
     
     var selectedObjectCircleShadow = d3Object.selectAll(".nodecircleshadow");
@@ -946,7 +947,9 @@ OTIEBrowser.prototype.clickedObjectMotion = function(object){
     d3Object=d3.select(object);
 
     var selectedObjectCircle=d3Object.selectAll(".nodecircle");
+    d3.select(selectedObjectCircle.node().parentNode).attr('cursor', 'default');
     var selectedObjectCircle=selectedObjectCircle.transition("expand");
+
     selectedObjectCircle.duration(this.transitionTime);
     selectedObjectCircle.attr("r",this.centerSize);
     
@@ -968,6 +971,9 @@ OTIEBrowser.prototype.clickedObjectMotion = function(object){
 			return -55
 		}
 	});
+
+
+    //selectedObjectCircle[0][0].parentNode.attr("cursor", "default");
     
     var groupTransition=d3Object.transition();
     groupTransition.duration(this.transitionTime);
@@ -1098,6 +1104,7 @@ OTIEBrowser.prototype.addNodeGraphics = function (newNodesList) {
     
     var groupList=newNodesList.insert("g", ".node");
     groupList.attr("class", "node");
+    groupList.attr("cursor", "pointer");
     groupList.on("click",function(dataObject){
         THIS.update(dataObject.id);
     });
