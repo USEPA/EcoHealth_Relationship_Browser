@@ -247,7 +247,7 @@ OTIEBrowser.prototype.layoutGUI = function(bibliographyLink){
     var gradient=this.svgPanelW.linearGradient("gradient","0%","0%","0%","100%");
     //gradient.addStop("0%","rgb(255,255,255)","0");
     //gradient.addStop("100%","rgb(180,180,180)","1");
-    gradient.addStop("0%","e5ffec","0.2");
+    gradient.addStop("0%","#e5ffec","0.2");
     gradient.addStop("100%","#e5f5fb","1.0"); //#lightblue 
     this.svgPanelW.addRectangle("100%","100%","url(#gradient)");
 
@@ -271,11 +271,12 @@ OTIEBrowser.prototype.layoutGUI = function(bibliographyLink){
    
 
     var beamGradient=this.svgPanelW.linearGradient("beamGradient","0%","0%","0%","0%");
-    beamGradient.addStop("0%","rgb(180,180,180)","1");
+    //beamGradient.addStop("0%","rgb(180,180,180)","1");
     beamGradient.addStop("100%","rgb(255,255,255)","1");
     this.beam=this.svgPanelW.addPolyline([[this.center.x,this.center.y-this.centerSize],[this.textColumn,this.textRowA],[this.textColumn,this.textRowB],[this.center.x,this.center.y+this.centerSize]]);
     this.beam.style.fill="url(#beamGradient)";
     this.beam.style.fillOpacity="0.7";
+
    
     //this.topicLabel.setSizeAll(50,30,50,30,50,30);
     
@@ -757,6 +758,7 @@ OTIEBrowser.prototype.adjustLinkNode = function(link){
         
         var midX=(x1a+x2a)*0.5;
         var midY=(y1a+y2a)*0.5;
+
         var linkCircle=link.select(".linkcircle");
         linkCircle.attr("cx",midX);
         linkCircle.attr("cy",midY);
@@ -767,9 +769,13 @@ OTIEBrowser.prototype.adjustLinkNode = function(link){
         linkCircle.attr("cy",midY);
         linkCircle.attr("stroke",color);
 		
+        itext_dy = midY
+        if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || navigator.userAgent.match(/Edge/)) {
+            itext_dy = midY+5;
+        }
 		var itext=link.select(".i_text");
         itext.attr("dx",midX);
-        itext.attr("dy",midY);
+        itext.attr("dy",itext_dy);
 		
 		
 		
