@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Nov 29 16:58:38 2018
-
+Purpose: Convert EcoHealth Relationship Browser Content stored in an Excel 
+         spreadsheet to JSON.
 @author: JBaynes
 """
 
@@ -12,9 +13,6 @@ import re
 import datetime
 import os
 import shutil
-
-
-print()
 
 
 
@@ -52,11 +50,9 @@ content = collections.OrderedDict([('nodes',[]), ('edges', [])])
 
 ## Ecosystems
 for i, row in es.iterrows():
-    text = "<h4>{0}</h4>".format(row.Ecosystem_Type)
-    text += "<p>{0}</p>".format(row.Description)
-    text += "<hr style='border-top:2px dashed rgb(170,170,170); background-color:white; margin:0px; padding-bottom:2px'"
-    text += "<p>Citations/Sources</p>"
-    text += "<p>{0}</p>".format(row.Citations)
+    text = collections.OrderedDict([(row.Ecosystem_Type, row.Description),
+                                    ('Citations', row.Citations)])
+    
     content['nodes'].append(collections.OrderedDict([('id', int(row.ID)), 
                                           ('color', eco_color), 
                                           ('group', 'Ecosystem'), 
@@ -65,8 +61,9 @@ for i, row in es.iterrows():
     
 ## Ecosystem Services
 for i, row in es_services.iterrows():
-    text = "<h4>{0}</h4>".format(row.EventType)
-    text += "<p>{0}</p>".format(row.Description)
+    text = collections.OrderedDict([(row.EventType, row.Description),
+                                    ('Citations', row.Citations)])
+    
     content['nodes'].append(collections.OrderedDict([('id', int(row.ID)), 
                                           ('color',es_color), 
                                           ('group', 'Ecosystem Services'), 
@@ -76,20 +73,16 @@ for i, row in es_services.iterrows():
 ## Health Outcomes
 for i, row in health_outcomes.iterrows():
     
-    text = "<h4>{0}</h4>".format(row.Issue)
-    text += "<p>{0}</p>".format(row.Definition)
+    #text = "<h4>{0}</h4>".format(row.Issue)
+    text = collections.OrderedDict([(row.Issue, row.Definition)])
+    
+
     for header in ['OrganSystem', 'Demographics', 'KnownContributingFactors',
                     'TrendInIncidence', 'Citations']:
+        header_label = ''.join(map(lambda x: x if x.islower() else " "+x, header)).lstrip()
+        text[header_label] = ''
         if len(row[header]):
-            ## camel case to spaces without having to use re
-            header_label = ''.join(map(lambda x: x if x.islower() else " "+x, header)).lstrip()
-            text += "<h4>{0}</h4>".format(header_label)
-            text += "<p>{0}</p>".format(row[header])
-    
-#    if len(row.Citations):
-#        text += "<hr style='border-top:2px dashed rgb(170,170,170); background-color:white; margin:0px; padding-bottom:2px'"
-#        text += "<p style='{0}'>Citations/Sources</p>".format(content_style)
-#        text += "<p style='{0}'>{1}</p>".format(content_style, row.Citations)
+            text[header_label] = row[header]
     
     content['nodes'].append(collections.OrderedDict([('id', int(row.ID)), 
                                           ('color',health_color), 
@@ -110,46 +103,96 @@ for i, row in health_outcomes.iterrows():
 
 ## Ecosystem - Ecosystem Services Linkages
 for i, row in es_services_links.iterrows():
-    text = ("<p>{2}</p>"
-            "<br>"
-            "<h4>Study Locations</h4>"
-            "<p>{3}</p>").format(row.fromID, 
-                                 row.toID,
-                                 row.Evidence,
-                                 row.StudyLocations)
     
-    source = int(es[es.Ecosystem_Type==row.fromID].ID.tolist()[0])
-    target = int(es_services[es_services.EventType==row.toID].ID.tolist()[0])
+    source_id = int(es[es.Ecosystem_Type==row.fromID].ID.tolist()[0])
+    source_text = es[es.Ecosystem_Type==row.fromID].Ecosystem_Type.tolist()[0]
+    target_id = int(es_services[es_services.EventType==row.toID].ID.tolist()[0])
+    target_text = es_services[es_services.EventType==row.toID].EventType.tolist()[0] 
+    
+    text = collections.OrderedDict([(source_text + ' | ' + target_text, '&nbsp;')])
+    
+    evidence_headers = re.findall(r'\*(.*?)\*', row.Evidence) #headers are between asterisk
+    
+    if len(evidence_headers):
+        for j, evidence_header in enumerate(evidence_headers):
+            if j < len(evidence_headers)-1:
+                pat = (evidence_headers[j]+r'\*(.*?)\*'+evidence_headers[j+1]+'\*')     
+            else:
+                pat = evidence_headers[j]+r'\*(.*?)$'
+                
+            evidence_group = re.findall(pat, row.Evidence)
+            evidence_group = [a.strip() for a in evidence_group]
+            
+            text[evidence_header] = evidence_group
+            
+    else:
+        text = collections.OrderedDict([(source_text + ' | ' + target_text, row.Evidence)])
+    
+    text['Study Locations'] = row.StudyLocations
+    
     content['edges'].append(collections.OrderedDict([('id',  int(row.ID)), 
-                                          ('source',int(source)), 
-                                          ('target', int(target)), 
+                                          ('source',int(source_id)), 
+                                          ('source_text',source_text), 
+                                          ('target', int(target_id)), 
+                                          ('target_text', target_text), 
                                           ('text', text)]))
     
 
 ## Ecosystem Services - Health Outcomes Linkages
 for i, row in health_outcomes_links.iterrows():
-    text = "<p>{0}</p>".format(row.Description)
-    if len(row.Evidence):
-        text += "<h4>Evidence</h4>"
-        evidence = ''
-        for e in re.split(r'\[(\d{1,2})\]', row.Evidence):
-            if len(e):
-                ## headers stay the same
-                if '</h4>' in e:
-                    evidence += e
-                ## open <p> and add digit
-                elif e.isdigit():
-                    evidence += '<p>[{0}]'.format(e)
-                ## content and close <p>
-                else:
-                    evidence += e + '</p>'
-        text+= evidence
     
-    source = int(es_services[es_services.EventType==row.fromID].ID.tolist()[0])
-    target = int(health_outcomes[health_outcomes.Issue==row.toID].ID.tolist()[0])
+    source_id = int(es_services[es_services.EventType==row.fromID].ID.tolist()[0])
+    source_text = es_services[es_services.EventType==row.fromID].EventType.tolist()[0]
+    target_id = int(health_outcomes[health_outcomes.Issue==row.toID].ID.tolist()[0])
+    target_text = health_outcomes[health_outcomes.Issue==row.toID].Issue.tolist()[0]
+    
+    
+    
+    text = collections.OrderedDict([(source_text + ' | ' + target_text, row.Description)])
+    text['Evidence'] = ''
+    
+    evidence_headers = re.findall(r'\*(.*?)\*', row.Evidence) #headers are between asterisk
+    
+
+
+    if len(evidence_headers):
+        for j, evidence_header in enumerate(evidence_headers):
+            if j < len(evidence_headers)-1:
+                pat = (evidence_headers[j]+r'\*(.*?)\*'+evidence_headers[j+1]+'\*')     
+            else:
+                pat = evidence_headers[j]+r'\*(.*?)$'
+                
+            evidence_group = re.findall(pat, row.Evidence)
+            evidence_group = [a.strip() for a in evidence_group]
+            
+            evidence_numbers = re.findall(r'\[(\d{1,2})\]', evidence_group[0])
+            evidence_text = filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0]))
+                
+            assert(len(evidence_numbers)==len(evidence_text))
+            
+            evidence_string =  ['['+m+'] ' + str(n) for m,n in zip(evidence_numbers,evidence_text)]
+            
+            text[evidence_header] = evidence_string
+            
+    else:
+        evidence_group = [row.Evidence]
+        
+        
+        evidence_numbers = re.findall(r'\[(\d{1,2})\]', evidence_group[0])
+        evidence_text = filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0]))
+            
+        assert(len(evidence_numbers)==len(evidence_text))
+        
+        evidence_string =  ['['+m+'] ' + n for m,n in zip(evidence_numbers,evidence_text)]
+        
+        text['Evidence']=evidence_string
+
+    
     content['edges'].append(collections.OrderedDict([('id',  int(row.ID)), 
-                                          ('source',int(source)), 
-                                          ('target', int(target)), 
+                                          ('source',int(source_id)), 
+                                          ('source_text',source_text), 
+                                          ('target', int(target_id)), 
+                                          ('target_text', target_text), 
                                           ('text', text)]))
 
 #export json   

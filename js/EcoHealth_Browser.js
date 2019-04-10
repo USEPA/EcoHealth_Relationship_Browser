@@ -615,7 +615,8 @@ OTIEBrowser.prototype.showLinkOverlay = function(linkObject,linkData){
     button.setBorder(WBorderStyle.createBorder(WBorderStyle.OUTSET,0))
     button.addClickEventListener(function(){THIS.box12.remove(linkOverlay);THIS.linkOverlay=null;});
        
-   var titleLabel=new WLabel(linkData.source.title + ' | ' + linkData.target.title); 
+   //var titleLabel=new WLabel(linkData.source.title + ' | ' + linkData.target.title); 
+   var titleLabel=new WLabel('Linkages'); 
     titleLabel.w.style.fontFamily=this.textFontFamily;
     titleLabel.w.style.fontSize=this.textAreaFontSize;
     //titleLabel.w.style.height="20px";
