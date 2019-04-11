@@ -2171,7 +2171,9 @@ WTextArea2.prototype.setText=function(string){
 
             if (value.length) {
                 this.w.innerHTML += '<h4>'+key+'</h4>';
-                this.w.innerHTML += '<p>'+value+'</p>'
+                if (value != '&nbsp;') {
+                    this.w.innerHTML += '<p>'+value+'</p>'
+                };
                 };
             }
         };
