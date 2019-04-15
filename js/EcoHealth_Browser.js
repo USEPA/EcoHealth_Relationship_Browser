@@ -19,7 +19,7 @@ function OTIEBrowser(title,graphToUse,startNode,bibliographyLink){
         startNode=parseInt(this.getCookie("currentNodeID"));
     }*/
 
-    this.setID("OTIEBrowser");
+    this.setID("EcoHealthBrowser");
     
     //this.titleFontFamily="Roboto Condensed";//"sans-serif"
     //this.textFontFamily="Roboto Condensed";
@@ -40,25 +40,25 @@ function OTIEBrowser(title,graphToUse,startNode,bibliographyLink){
     this.textRowB=680;
     this.textRowC=650;
 
-    this.center={x:360,y:355};
+    this.center={x:360,y:352};
 
     this.hold=null;
 
     this.transitionTime=500;//in ms
     this.beamTime=150;//in ms
 
-    this.edgeSize=51;//circle sizes
-    this.centerSize=this.edgeSize*1.4;
+    this.edgeSize=49;//circle sizes
+    this.centerSize=this.edgeSize*1.35;
     
-    this.innerRingDistance=224;
-    this.levelDistance=55;
+    this.innerRingDistance=225;
+    this.levelDistance=70;
 
     this.characterLengthBeforePathSplit=130;
     
-    this.fontSize=13;
+    this.fontSize=12;
 
-    this.inboundColor="rgb(183, 198, 49)";//"lime";//"#EE7700";
-    this.outboundColor="rgb(133, 205, 238)";//"lightturquoise";//"#88ACD0";
+    this.inboundColor="rgb(183, 198, 49)";
+    this.outboundColor="rgb(133, 205, 238)";
     
     this.activeNodeList = [];
     this.activeLinkList = [];
@@ -247,7 +247,7 @@ OTIEBrowser.prototype.layoutGUI = function(bibliographyLink){
     var gradient=this.svgPanelW.linearGradient("gradient","0%","0%","0%","100%");
     //gradient.addStop("0%","rgb(255,255,255)","0");
     //gradient.addStop("100%","rgb(180,180,180)","1");
-    gradient.addStop("0%","#e5ffec","0.2");
+    gradient.addStop("0%","#e5ffec","0.9");
     gradient.addStop("100%","#e5f5fb","1.0"); //#lightblue 
     this.svgPanelW.addRectangle("100%","100%","url(#gradient)");
 
@@ -968,14 +968,14 @@ OTIEBrowser.prototype.clickedObjectMotion = function(object){
 	var selectedObjectImage = d3Object.select('.nodeimage');
 	selectedObjectImage=selectedObjectImage.transition("expand");
 	selectedObjectImage.duration(this.transitionTime);
-	selectedObjectImage.attr('width', 120);
-	selectedObjectImage.attr('height', 120);
-	selectedObjectImage.attr('y', -60);
+	selectedObjectImage.attr('width', 106);
+	selectedObjectImage.attr('height', 106);
+	selectedObjectImage.attr('y', -53);
 	selectedObjectImage.attr('x', function(d) {
 		if (d.id < 100 && d.id > 10) {
-			return -60
+			return -53
 		} else {
-			return -55
+			return -49
 		}
 	});
 
