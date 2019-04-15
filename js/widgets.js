@@ -2156,13 +2156,13 @@ WTextArea2.prototype.setText=function(string){
     // will need to recode some more if we go more than 2 deep
     if (typeof(string)=='object') {
         this.w.innerHTML = ''
-        for (const key in string) {
+        for (var key in string) {
             let value = string[key];
             if (Array.isArray(value)) {
                 if (value.length) {
 
                     this.w.innerHTML += '<h4>'+key+'</h4>';
-                    for (const i in value) {
+                    for (var i in value) {
                         this.w.innerHTML += '<p>' + value[i] + '</p>'
                     }
                 };
