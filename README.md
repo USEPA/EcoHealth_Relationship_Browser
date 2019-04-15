@@ -5,13 +5,10 @@
 ## Overview
 The Eco-Health Relationship Browser illustrates scientific evidence for linkages between human health and ecosystem services. 
 
-https://www.epa.gov/enviroatlas/enviroatlas-eco-health-relationship-browser
+Fact Sheet: [https://www.epa.gov/sites/production/files/2015-07/documents/ecohealth_relationship_browser_factsheet.pdf](https://www.epa.gov/sites/production/files/2015-07/documents/ecohealth_relationship_browser_factsheet.pdf)
 
 ## Content
 The content/information in the Eco-Health Relationship Browser is based on a systematic literature review of peer-reviewed journal articles published between January 1990 and December 2012.
-
-An update in...
-An update in...
 
 Publication: Jackson, L. E., Daniel, J., McCorkle, B., Sears, A., & Bush, K. F. 2013. Linking ecosystem services and human health: the EcoHealth Relationship Browser. International Journal of Public Health, 58(5), 747-755. doi: 10.1007/s00038-013-0482-1. Epub 2013 Jul 23.
 
@@ -20,7 +17,7 @@ Publication: Jackson, L. E., Daniel, J., McCorkle, B., Sears, A., & Bush, K. F. 
 U.S. Environmental Protection Agency
 Office of Research and Development
 Durham, NC 27709
-https://www.epa.gov/enviroatlas/forms/contact-us-about-enviroatlas
+[https://www.epa.gov/enviroatlas/forms/contact-us-about-enviroatlas](https://www.epa.gov/enviroatlas/forms/contact-us-about-enviroatlas)
 
 
 ## Tool Authors

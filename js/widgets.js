@@ -2152,7 +2152,34 @@ function WTextArea2(string){
 };
 
 WTextArea2.prototype.setText=function(string){
-    this.w.innerHTML=string;
+    // added this to support key:object strings in content.json
+    // will need to recode some more if we go more than 2 deep
+    if (typeof(string)=='object') {
+        this.w.innerHTML = ''
+        for (var key in string) {
+            let value = string[key];
+            if (Array.isArray(value)) {
+                if (value.length) {
+
+                    this.w.innerHTML += '<h4>'+key+'</h4>';
+                    for (var i in value) {
+                        this.w.innerHTML += '<p>' + value[i] + '</p>'
+                    }
+                };
+            
+            } else {
+
+            if (value.length) {
+                this.w.innerHTML += '<h4>'+key+'</h4>';
+                if (value != '&nbsp;') {
+                    this.w.innerHTML += '<p>'+value+'</p>'
+                };
+                };
+            }
+        };
+    } else {
+        this.w.innerHTML=string;
+    }
 };
 
 WTextArea2.prototype.removeAllChildren=function(){
