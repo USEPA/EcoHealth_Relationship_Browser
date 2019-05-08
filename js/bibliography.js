@@ -41,12 +41,18 @@ for (i=0; i<alphabet.length; i++) {
 
 		var citation = document.createElement('p');
 		citation.className='citation';
+		citation.style='cursor: pointer'
+		citation.id=  filtered_entries[j].ID;
 		citation.innerHTML = filtered_entries[j].CITATION;
 		entry.appendChild(citation);
+		
+		var anchorText= document.createElement('a');
+		anchorText.className='anchorText';
+		anchorText.id = filtered_entries[j].ID;
+		entry.appendChild(anchorText); 
 
 		var entry_abstract = document.createElement('div');
 		entry_abstract.className='abstract';
-
 		abstract_p = document.createElement('p');
 		abstract_p.innerHTML = filtered_entries[j].ABSTRACT;
 		entry_abstract.appendChild(abstract_p);
