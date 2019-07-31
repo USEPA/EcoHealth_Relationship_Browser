@@ -2,7 +2,7 @@ jQuery(document).ready(function() {
 	
 	function make_data_table(searchterm) {
 		var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-		jQuery("#bibliography_table").append('<tfoot><tr><th></th><th></th><th class="table_footer"></th><th></th></tr></tfoot>');
+		$("#bibliography_table").append('<tfoot><tr><th></th><th></th><th class="table_footer"></th><th></th></tr></tfoot>');
 		var table = jQuery('#bibliography_table').dataTable({ 
 			
 		
@@ -54,7 +54,7 @@ jQuery(document).ready(function() {
 			columns: [
 				{"visible": false},
 				{"visible": false},
-				{ title: "Citations (Click citation for abstract)" },
+				{ title: "Citation (Click to view abstract)" },
 				{ className: "none"}//, title: 'Abstract' }
 			], 
 			"columnDefs": [
@@ -88,7 +88,6 @@ jQuery(document).ready(function() {
 
 
 var output = eco_health_bib_content.map(function(a) {return ["", a.ID, a.CITATION, a.ABSTRACT];});
-
 
 
 var hash = window.location.hash;
