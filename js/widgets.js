@@ -2805,3 +2805,8 @@ function imagePopup(myImage, myTitle, myCaption, mySource) {
 	myWindow.document.write("<img src=" + myImage + ">");
 	return myWindow;
 };
+
+function showContent(js_string) {
+	var wnd = window.open();
+	wnd.document.write('<div style="white-space: pre-wrap;">'+JSON.stringify(js_string, null, 4)+'</div>');
+}
