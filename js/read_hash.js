@@ -13,5 +13,3 @@ if (window.location.hash.length) {
     };
 
 }; 
-
-console.log(start_node);
