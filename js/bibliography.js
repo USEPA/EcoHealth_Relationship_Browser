@@ -1,3 +1,5 @@
+
+
 jQuery(document).ready(function() {
 	
 	function make_data_table(searchterm, is_direct_link) {
@@ -5,7 +7,7 @@ jQuery(document).ready(function() {
 		var table = jQuery('#bibliography_table').DataTable({ 
 					
 			"dom": '<"top"pfli>rt<"clear">',
-			"data": output,
+			"data": content,
 			"bAutoWidth": false,
 			"language": {
 				"info": "_TOTAL_ citations",
@@ -18,28 +20,37 @@ jQuery(document).ready(function() {
 			"pageLength": 50,
 			"order": [[ 2, 'asc' ]],
 			columns: [
+				{"visible": false, className: "shown"},
 				{"visible": false},
-				{"visible": false},
-				{ title: "Citations (Click citation for abstract)" },
-				{ className: "none"}//, title: 'Abstract' }
+				{ title: "Citations (Click citation for abstract)"},
+				{ className: "none"}
 			], 
 			"columnDefs": [
 				{"orderable": false, "targets":[2] },
 			],
 			
-			
-			
-			}); //end dataTable
+		}); //end dataTable
 		
+		
+		// Add clear search button
+		var clear_search = jQuery('<div id="clear_search">Clear Search</div>')
+		clear_search.css({'text-decoration':'underline', 'cursor':'pointer', 'float':'right'})
+					.click(function() {
+							table.search('').draw();
+						})
+					.appendTo('#bibliography_table_filter');
+		
+		// If direct link then open abstract.
 		if (is_direct_link) {
 			table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
 		}
+		
+		// Turn off loading text
 		jQuery( "#loading" ).hide();
-
 
 	}
 
-var output = eco_health_bib_content.map(function(a) {return ["", a.ID, a.CITATION, a.ABSTRACT];});
+var content = eco_health_bib_content.map(function(a) {return ["", a.ID, a.CITATION, a.ABSTRACT];});
 
 var hash = window.location.hash;
 var is_direct_link = 0
