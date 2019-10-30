@@ -1,9 +1,8 @@
 jQuery(document).ready(function() {
 	
-	function make_data_table(searchterm) {
-		var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-		jQuery("#bibliography_table").append('<tfoot><tr><th></th><th></th><th class="table_footer"></th><th></th></tr></tfoot>');
-		var table = jQuery('#bibliography_table').dataTable({ 
+	function make_data_table(searchterm, is_direct_link) {
+		
+		var table = jQuery('#bibliography_table').DataTable({ 
 					
 			"dom": '<"top"pfli>rt<"clear">',
 			"data": output,
@@ -25,42 +24,27 @@ jQuery(document).ready(function() {
 				{ className: "none"}//, title: 'Abstract' }
 			], 
 			"columnDefs": [
-			
-			
-				//{"searchable": false, "targets": [0, 1]}
 				{"orderable": false, "targets":[2] },
-				{"targets": 1,
-					"render": function ( data, type, full, meta ) {
-						
-						d = data.split('_');
-						if (d.length > 1) {
-							return  d[1];//meta.row+1;
-						} else {
-							return 'null'
-						}
-					} 
-				}
 			],
 			
 			
 			
 			}); //end dataTable
-			
+		
+		if (is_direct_link) {
+			table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+		}
 		jQuery( "#loading" ).hide();
 
 
 	}
 
-//console.log(eco_health_bib_content);
-
-
 var output = eco_health_bib_content.map(function(a) {return ["", a.ID, a.CITATION, a.ABSTRACT];});
 
-
-
 var hash = window.location.hash;
-console.log(hash);
-make_data_table(hash.substring(1));
+var is_direct_link = 0
+if (hash.substring(1) != "") {is_direct_link = 1;}
+make_data_table(hash.substring(1), is_direct_link);
 
 }); // end ready function
 
