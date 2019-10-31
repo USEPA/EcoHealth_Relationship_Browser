@@ -17,6 +17,7 @@ import shutil
 
 
 work_dir = os.path.dirname(os.path.realpath(__file__))
+
 es_csv = os.path.join(work_dir, 'EcoHealthContent.xlsx')
 
 eco_color = 'black'
@@ -162,7 +163,7 @@ for i, row in health_outcomes_links.iterrows():
             else:
                 pat = evidence_headers[j]+r'\*(.*?)$'
                 
-            evidence_group = re.findall(pat, row.Evidence)
+            evidence_group = re.findall(pat, row.Evidence, re.DOTALL)
             evidence_group = [a.strip() for a in evidence_group]
             
             evidence_numbers = re.findall(r'\[(\d{1,2})\]', evidence_group[0])
@@ -170,7 +171,7 @@ for i, row in health_outcomes_links.iterrows():
                 
             assert(len(evidence_numbers)==len(evidence_text))
             
-            evidence_string =  ['['+m+'] ' + str(n) for m,n in zip(evidence_numbers,evidence_text)]
+            evidence_string =  ['['+m+'] ' +  (n.replace(u"\u201d", "'")) for m,n in zip(evidence_numbers,evidence_text)]
             
             text[evidence_header] = evidence_string
             
@@ -183,7 +184,7 @@ for i, row in health_outcomes_links.iterrows():
             
         assert(len(evidence_numbers)==len(evidence_text))
         
-        evidence_string =  ['['+m+'] ' + n for m,n in zip(evidence_numbers,evidence_text)]
+        evidence_string =  ['['+m+'] ' + n.replace(u'\u201d', '"') for m,n in zip(evidence_numbers,evidence_text)]
         
         text['Evidence']=evidence_string
 
