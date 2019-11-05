@@ -6,7 +6,7 @@ jQuery(document).ready(function() {
 		
 		var table = jQuery('#bibliography_table').DataTable({ 
 					
-			"dom": '<"top"pfli>rt<"clear">',
+			"dom": '<"top"flip>rt<"clear">',
 			"data": content,
 			"bAutoWidth": false,
 			"language": {
@@ -14,15 +14,15 @@ jQuery(document).ready(function() {
 				"infoEmpty":"0 citations found",
 				"infoFiltered":   "(filtered from _MAX_ total citations)"
 			},
-			"paging": false,
-			"pagingType": "numbers",
+			"paging": true,
+			"pagingType": "simple_numbers",
 			"oSearch": {"sSearch": searchterm},
-			"pageLength": 50,
+			"pageLength": 10,
 			"order": [[ 2, 'asc' ]],
 			columns: [
 				{"visible": false, className: "shown"},
 				{"visible": false},
-				{ title: "Citations (Click citation for abstract)"},
+				{ title: "Citations (Click citation to open/close abstract)"},
 				{ className: "none"}
 			], 
 			"columnDefs": [

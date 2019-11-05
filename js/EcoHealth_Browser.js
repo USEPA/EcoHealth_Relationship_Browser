@@ -115,9 +115,9 @@ OTIEBrowser.prototype.checkGraph=function(){
 
 OTIEBrowser.prototype.layoutGUI = function(bibliographyLink){
     var THIS=this;
-    //this.addFont();
-    this.box1=new WVerticalBox();
-	this.box1.w.className='test';
+    // //this.addFont();
+     this.box1=new WVerticalBox();
+	 this.box1.w.style.textUnderlinePosition="under"
     
     this.box10=new WHorizontalBox();
     this.box10.setSizeAll(1030,0, 1030,0,1030,0);
@@ -1090,14 +1090,7 @@ OTIEBrowser.prototype.addLinkGraphics = function (newLinksList) {
             //var line=groupList.append("path");
             var i_text=d3.select(this).append("text");
             i_text.text('i');
-			i_text.attr('font-size', '13px');
-			i_text.attr('font-style', 'italic');
-			i_text.attr('font-weight', '700');
-			i_text.attr("text-anchor", "middle");
-			i_text.attr("dominant-baseline", "central");
-			i_text.attr("cursor", "pointer");
 			i_text.attr("class", "i_text");
-			i_text.attr("fill", "white");
 			i_text.on("click",function(dataObject){THIS.showLinkOverlay(this,dataObject);});
 			
 			
