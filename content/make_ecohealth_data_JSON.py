@@ -122,12 +122,12 @@ for i, row in es_services_links.iterrows():
                 pat = evidence_headers[j]+r'\*(.*?)$'
                 
             evidence_group = re.findall(pat, row.Evidence)
-            evidence_group = [a.strip() for a in evidence_group]
+            evidence_group = [a.replace(u'\u201d', "'").strip() for a in evidence_group]
             
             text[evidence_header] = evidence_group
             
     else:
-        text = collections.OrderedDict([(source_text + ' | ' + target_text, row.Evidence)])
+        text = collections.OrderedDict([(source_text + ' | ' + target_text, row.Evidence.replace(u'\u201d', "'"))])
     
     text['Study Locations'] = row.StudyLocations
     
@@ -149,13 +149,13 @@ for i, row in health_outcomes_links.iterrows():
     
     
     
-    text = collections.OrderedDict([(source_text + ' | ' + target_text, row.Description)])
+    text = collections.OrderedDict([(source_text + ' | ' + target_text, row.Description.replace(u"\u201d", "'"))])
     text['Evidence'] = ''
     
     evidence_headers = re.findall(r'\*(.*?)\*', row.Evidence) #headers are between asterisk
-    
-
-
+#    
+#
+#
     if len(evidence_headers):
         for j, evidence_header in enumerate(evidence_headers):
             if j < len(evidence_headers)-1:
@@ -184,7 +184,7 @@ for i, row in health_outcomes_links.iterrows():
             
         assert(len(evidence_numbers)==len(evidence_text))
         
-        evidence_string =  ['['+m+'] ' + n.replace(u'\u201d', '"') for m,n in zip(evidence_numbers,evidence_text)]
+        evidence_string =  ['['+m+'] ' + n.replace(u'\u201d', "'") for m,n in zip(evidence_numbers,evidence_text)]
         
         text['Evidence']=evidence_string
 
