@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
 			"pagingType": "simple_numbers",
 			"oSearch": {"sSearch": searchterm},
 			"pageLength": 10,
-			"order": [[ 2, 'asc' ]],
+			"order": [[ 1, 'asc' ]],
 			columns: [
 				{"visible": false, className: "shown"},
 				{"visible": false},
