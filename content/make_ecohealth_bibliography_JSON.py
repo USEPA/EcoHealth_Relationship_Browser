@@ -14,7 +14,7 @@ work_dir = os.path.dirname(os.path.realpath(__file__))
 es_csv = os.path.join(work_dir, 'EcoHealthContent.xlsx')
 
 biblio = pandas.read_excel(es_csv, 'Bibliography').fillna('')
-biblio = biblio.drop(['ALPHABET_HIDDEN', 'Comments'], axis=1)
+biblio = biblio.drop(['Comments'], axis=1)
 
 biblio_dict = biblio.to_dict(into=OrderedDict, orient='records')
 
