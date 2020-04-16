@@ -15,8 +15,13 @@ import os
 import shutil
 
 def add_url(s):
-    return re.sub(u'(<a href=\u201d)(.*?)(\u201d>)', r'<a href="{0}\2" target="_blank">'.format(url), s)
+    return re.sub(u'(<a href=")(.*?)(">)', r'<a href="{0}\2" target="_blank">'.format(url), s)
 
+def replace_quotes(df):
+    #replace single and double quotes unicode with ascii characters
+    a = df.replace([u'\u201c', u'\u201d'], '"', regex=True)
+    b = a.replace([u'\u2018', u'\u2019'], "'", regex=True)
+    return b
 
 work_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -37,10 +42,19 @@ eco_text = ("<h3>EnviroAtlas Eco-Health Relationship Browser</h3>The Eco-Health 
 		
 
 es = pandas.read_excel(es_csv, 'Ecosystems').fillna('')
+es = replace_quotes(es)
+
 es_services = pandas.read_excel(es_csv, 'ES_Services').fillna('')
+es_services = replace_quotes(es_services)
+
 es_services_links = pandas.read_excel(es_csv, 'ES_Services_Links').fillna('')
+es_services_links = replace_quotes(es_services_links)
+
 health_outcomes = pandas.read_excel(es_csv, 'Health_Outcomes').fillna('')
+health_outcomes = replace_quotes(health_outcomes)
+
 health_outcomes_links = pandas.read_excel(es_csv, 'Health_Outcome_Links').fillna('')
+health_outcomes_links = replace_quotes(health_outcomes_links)
 
 
 content = collections.OrderedDict([('nodes',[]), ('edges', [])])
@@ -56,7 +70,7 @@ content = collections.OrderedDict([('nodes',[]), ('edges', [])])
 ## Ecosystems
 for i, row in es.iterrows():
     text = collections.OrderedDict([(row.Ecosystem_Type, add_url(row.Description)),
-                                    ('Citations', add_url(row.Citations))])
+                                    ('References', add_url(row.References))])
     
     content['nodes'].append(collections.OrderedDict([('id', int(row.ID)), 
                                           ('color', eco_color), 
@@ -67,7 +81,7 @@ for i, row in es.iterrows():
 ## Ecosystem Services
 for i, row in es_services.iterrows():
     text = collections.OrderedDict([(row.EventType, add_url(row.Description)),
-                                    ('Citations', add_url(row.Citations))])
+                                    ('References', add_url(row.References))])
     
     content['nodes'].append(collections.OrderedDict([('id', int(row.ID)), 
                                           ('color',es_color), 
@@ -78,12 +92,12 @@ for i, row in es_services.iterrows():
 ## Health Outcomes
 for i, row in health_outcomes.iterrows():
     
-    #text = "<h4>{0}</h4>".format(row.Issue)
+
     text = collections.OrderedDict([(row.Issue, row.Definition)])
     
 
     for header in ['OrganSystem', 'Demographics', 'KnownContributingFactors',
-                    'TrendInIncidence', 'Citations']:
+                    'TrendInIncidence', 'References']:
         header_label = ''.join(map(lambda x: x if x.islower() else " "+x, header)).lstrip()
         text[header_label] = ''
         if len(row[header]):
@@ -126,12 +140,11 @@ for i, row in es_services_links.iterrows():
                 pat = evidence_headers[j]+r'\*(.*?)$'
                 
             evidence_group = re.findall(pat, add_url(row.Evidence))
-            evidence_group = [a.replace(u'\u201d', "'").strip() for a in evidence_group]
             
             text[evidence_header] = evidence_group
             
     else:
-        text = collections.OrderedDict([(source_text + ' | ' + target_text, add_url(row.Evidence).replace(u'\u201d', "'"))])
+        text = collections.OrderedDict([(source_text + ' | ' + target_text, add_url(row.Evidence))])
     
     text['Study Locations'] = add_url(row.StudyLocations)
     
@@ -153,7 +166,7 @@ for i, row in health_outcomes_links.iterrows():
     
     
     
-    text = collections.OrderedDict([(source_text + ' | ' + target_text, add_url(row.Description).replace(u"\u201d", "'"))])
+    text = collections.OrderedDict([(source_text + ' | ' + target_text, add_url(row.Description))])
     text['Evidence'] = ''
     
     evidence_headers = re.findall(r'\*(.*?)\*', row.Evidence) #headers are between asterisk
@@ -175,7 +188,7 @@ for i, row in health_outcomes_links.iterrows():
                 
             assert(len(evidence_numbers)==len(evidence_text))
             
-            evidence_string =  ['['+m+'] ' +  (add_url(n).replace(u"\u201d", "'")) for m,n in zip(evidence_numbers,evidence_text)]
+            evidence_string =  ['['+m+'] ' +  (add_url(n)) for m,n in zip(evidence_numbers,evidence_text)]
             
             text[evidence_header] = evidence_string
             
@@ -188,7 +201,7 @@ for i, row in health_outcomes_links.iterrows():
             
         assert(len(evidence_numbers)==len(evidence_text))
         
-        evidence_string =  ['['+m+'] ' + add_url(n).replace(u'\u201d', "'") for m,n in zip(evidence_numbers,evidence_text)]
+        evidence_string =  ['['+m+'] ' + add_url(n) for m,n in zip(evidence_numbers,evidence_text)]
         
         text['Evidence']=evidence_string
 
