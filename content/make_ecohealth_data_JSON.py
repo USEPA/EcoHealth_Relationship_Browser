@@ -15,7 +15,7 @@ import os
 import shutil
 
 def add_url(s):
-    return re.sub(u'(<a href=")(.*?)(">)', r'<a href="{0}\2" target="_blank">'.format(url), s)
+    return re.sub(u'(<a href="#)(.*?)(">)', r'<a href="{0}#\2" target="_blank">'.format(url), s)
 
 def replace_quotes(df):
     #replace single and double quotes unicode with ascii characters
@@ -123,7 +123,7 @@ for i, row in health_outcomes.iterrows():
 
 ## Ecosystem - Ecosystem Services Linkages
 for i, row in es_services_links.iterrows():
-    
+
     source_id = int(es[es.Ecosystem_Type==row.fromID].ID.tolist()[0])
     source_text = es[es.Ecosystem_Type==row.fromID].Ecosystem_Type.tolist()[0]
     target_id = int(es_services[es_services.EventType==row.toID].ID.tolist()[0])
@@ -135,6 +135,11 @@ for i, row in es_services_links.iterrows():
     
     if len(evidence_headers):
         for j, evidence_header in enumerate(evidence_headers):
+            ## test for content before the first header
+            if j == 0:
+                pat = r'(.*?)\*'+evidence_headers[j]    
+                if len(pat):
+                    text[''] = re.findall(pat, add_url(row.Evidence))
             if j < len(evidence_headers)-1:
                 pat = (evidence_headers[j]+r'\*(.*?)\*'+evidence_headers[j+1]+'\*')     
             else:
@@ -155,7 +160,7 @@ for i, row in es_services_links.iterrows():
                                           ('target', int(target_id)), 
                                           ('target_text', target_text), 
                                           ('text', text)]))
-    
+        
 
 ## Ecosystem Services - Health Outcomes Linkages
 for i, row in health_outcomes_links.iterrows():
