@@ -137,13 +137,13 @@ for i, row in es_services_links.iterrows():
         for j, evidence_header in enumerate(evidence_headers):
             ## test for content before the first header
             if j == 0:
-                pat = r'(.*?)\*'+evidence_headers[j]    
+                pat = r'(.*?)\*'+re.escape(evidence_headers[j])
                 if len(pat):
                     text[''] = re.findall(pat, add_url(row.Evidence))
             if j < len(evidence_headers)-1:
-                pat = (evidence_headers[j]+r'\*(.*?)\*'+evidence_headers[j+1]+'\*')     
+                pat = (re.escape(evidence_headers[j])+r'\*(.*?)\*'+re.escape(evidence_headers[j+1]))     
             else:
-                pat = evidence_headers[j]+r'\*(.*?)$'
+                pat = re.escape(evidence_headers[j])+r'\*(.*?)$'
                 
             evidence_group = re.findall(pat, add_url(row.Evidence))
             
@@ -182,9 +182,9 @@ for i, row in health_outcomes_links.iterrows():
     if len(evidence_headers):
         for j, evidence_header in enumerate(evidence_headers):
             if j < len(evidence_headers)-1:
-                pat = (evidence_headers[j]+r'\*(.*?)\*'+evidence_headers[j+1]+'\*')     
+                pat = (re.escape(evidence_headers[j])+r'\*(.*?)\*'+re.escape(evidence_headers[j+1])+'\*')     
             else:
-                pat = evidence_headers[j]+r'\*(.*?)$'
+                pat = re.escape(evidence_headers[j])+r'\*(.*?)$'
                 
             evidence_group = re.findall(pat, row.Evidence, re.DOTALL)
             evidence_group = [a.strip() for a in evidence_group]
