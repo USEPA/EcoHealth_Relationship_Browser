@@ -28,7 +28,7 @@ work_dir = os.path.dirname(os.path.realpath(__file__))
 es_csv = os.path.join(work_dir, 'EcoHealthContent.xlsx')
 
 url = 'https://leb.epa.gov/enviroatlas/natlas/currentdevelopment/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
-#url = 'https://enviroatlas.epa.gov/enviroatlas/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
+url = 'https://enviroatlas.epa.gov/enviroatlas/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
 
 eco_color = 'black'
 es_color = 'black'
