@@ -891,7 +891,7 @@ OTIEBrowser.prototype.oldObjectMotion = function(guiObject,radians,level){
 		if (d.id < 100 && d.id > 10) {
 			return -47;
 		} else {
-			return -39;
+			return -38;
 		}
 	});
 	selectedObjectImage.attr('y', function(d) {
@@ -972,8 +972,9 @@ OTIEBrowser.prototype.clickedObjectMotion = function(object){
 	selectedObjectImage.attr('height', 106);
 	selectedObjectImage.attr('y', -53);
 	selectedObjectImage.attr('x', function(d) {
-		if (d.id < 100 && d.id > 10) {
-			return -53
+		//if (d.id < 100 && d.id > 10) {
+		if (d.id > 10) {
+			return -52
 		} else {
 			return -49
 		}
@@ -1129,28 +1130,36 @@ OTIEBrowser.prototype.addNodeGraphics = function (newNodesList) {
 
 	// Need to make the bird image a little bigger to match the others and fully center all; manually setting works for now.
 	imageList.attr('x', function(d) {
-		if (d.id < 100 && d.id > 10) {
+		if (d.id >= 100) {
+			return -37;
+		} else if (d.id < 100 && d.id > 10) {
 			return -47;
 		} else {
 			return -39;
 		}
 	});
 	imageList.attr('y', function(d) {
-		if (d.id < 100 && d.id > 10) {
+		if (d.id >= 100) {
+			return -38;
+		} else if (d.id < 100 && d.id > 10) {
 			return -44;
 		} else {
 			return -43;
 		}
 	});
 	imageList.attr('width', function(d) {
-		if (d.id < 100 && d.id > 10) {
+		if (d.id >= 100) {
+			return 78;
+		} else if (d.id < 100 && d.id > 10) {
 			return 95;
 		} else {
 			return 84;
 		}
 	});
 	imageList.attr('height', function(d) {
-		if (d.id < 100 && d.id > 10) {
+		if (d.id >= 100) {
+			return 78;
+		} else if (d.id < 100 && d.id > 10) {
 			return 95;
 		} else {
 			return 84;
@@ -1169,10 +1178,17 @@ OTIEBrowser.prototype.addNodeGraphics = function (newNodesList) {
 			return "./images/bird.png";
 		}
 		else {
-			return "./images/person.png";
+			return "https://upload.wikimedia.org/wikipedia/commons/5/57/Caduceus.svg";
 		}
 		})
-	imageList.style("opacity", .85);
+	imageList.style("opacity", function(d) {
+		if (d.id >= 100) {
+			return .25;
+		}
+		else {
+			return .85;
+		}
+	});
 	imageList.attr('class', 'nodeimage');
 	
     
