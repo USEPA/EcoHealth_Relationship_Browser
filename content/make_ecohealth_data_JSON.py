@@ -28,7 +28,7 @@ work_dir = os.path.dirname(os.path.realpath(__file__))
 es_csv = os.path.join(work_dir, 'EcoHealthContent.xlsx')
 
 url = 'https://leb.epa.gov/enviroatlas/natlas/currentdevelopment/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
-#url = 'https://enviroatlas.epa.gov/enviroatlas/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
+url = 'https://enviroatlas.epa.gov/enviroatlas/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
 
 eco_color = 'black'
 es_color = 'black'
@@ -129,7 +129,7 @@ for i, row in es_services_links.iterrows():
     target_id = int(es_services[es_services.EventType==row.toID].ID.tolist()[0])
     target_text = es_services[es_services.EventType==row.toID].EventType.tolist()[0] 
     
-    text = collections.OrderedDict([(source_text + ' | ' + target_text, '&nbsp;')])
+    text = collections.OrderedDict([(source_text + ' &#8594; ' + target_text, '&nbsp;')])
     
     evidence_headers = re.findall(r'\*(.*?)\*', row.Evidence) #headers are between asterisk
     
@@ -150,7 +150,7 @@ for i, row in es_services_links.iterrows():
             text[evidence_header] = evidence_group
             
     else:
-        text = collections.OrderedDict([(source_text + ' | ' + target_text, add_url(row.Evidence))])
+        text = collections.OrderedDict([(source_text + ' &#8594; ' + target_text, add_url(row.Evidence))])
     
     text['Study Locations'] = add_url(row.StudyLocations)
     
@@ -172,7 +172,7 @@ for i, row in health_outcomes_links.iterrows():
     
     
     
-    text = collections.OrderedDict([(source_text + ' | ' + target_text, add_url(row.Description))])
+    text = collections.OrderedDict([(source_text + ' &#8594; ' + target_text, add_url(row.Description))])
     text['Evidence'] = ''
     
     evidence_headers = re.findall(r'\*(.*?)\*', row.Evidence) #headers are between asterisk
@@ -204,7 +204,8 @@ for i, row in health_outcomes_links.iterrows():
         
         evidence_numbers = re.findall(r'\[(\d{1,2})\]', evidence_group[0])
         evidence_text = filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0]))
-            
+        
+        
         assert(len(evidence_numbers)==len(evidence_text))
         
         evidence_string =  ['['+m+'] ' + add_url(n) for m,n in zip(evidence_numbers,evidence_text)]
