@@ -25,6 +25,24 @@ jQuery(document).ready(function() {
 				{ title: "Citations (Click citation to open/close abstract)"},
 				{ className: "none"}
 			], 
+			responsive: {
+            details: {
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td style="border:none">'+col.data+'</td> '+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+					}
+				}
+			},
+
 			"columnDefs": [
 				{"orderable": false, "targets":[2] },
 			],
@@ -51,6 +69,10 @@ jQuery(document).ready(function() {
 	}
 
 var content = eco_health_bib_content.map(function(a) {return ["", a.ID, a.CITATION, a.ABSTRACT];});
+
+jQuery('.dtr-data').css({'display': 'block', 'color': 'green'})
+jQuery('.dtr-title').css({'display': 'block', 'color': 'red'})
+
 
 var hash = window.location.hash;
 var is_direct_link = 0
