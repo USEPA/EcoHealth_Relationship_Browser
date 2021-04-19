@@ -1,9 +1,9 @@
 # Eco-Health Relationship Browser
-*Note: This version of the Eco-Health Relationship Browser is still under development. Until noted, we recommend using the current production version found at:*
-[https://www.epa.gov/enviroatlas/enviroatlas-eco-health-relationship-browser](https://www.epa.gov/enviroatlas/enviroatlas-eco-health-relationship-browser)
 
 ## Overview
 The Eco-Health Relationship Browser illustrates scientific evidence for linkages between human health and ecosystem services. 
+
+Browser Link: [https://www.epa.gov/enviroatlas/enviroatlas-eco-health-relationship-browser](https://www.epa.gov/enviroatlas/enviroatlas-eco-health-relationship-browser)
 
 Fact Sheet: [https://www.epa.gov/sites/production/files/2015-07/documents/ecohealth_relationship_browser_factsheet.pdf](https://www.epa.gov/sites/production/files/2015-07/documents/ecohealth_relationship_browser_factsheet.pdf)
 
