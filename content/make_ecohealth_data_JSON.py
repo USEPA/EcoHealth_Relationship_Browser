@@ -190,7 +190,7 @@ for i, row in health_outcomes_links.iterrows():
             evidence_group = [a.strip() for a in evidence_group]
             
             evidence_numbers = re.findall(r'\[(\d{1,2})\]', evidence_group[0])
-            evidence_text = filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0]))
+            evidence_text = list(filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0])))
                 
             assert(len(evidence_numbers)==len(evidence_text))
             
@@ -203,7 +203,7 @@ for i, row in health_outcomes_links.iterrows():
         
         
         evidence_numbers = re.findall(r'\[(\d{1,2})\]', evidence_group[0])
-        evidence_text = filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0]))
+        evidence_text = list(filter(None, re.split(r'\[\d{1,2}\]', evidence_group[0])))
         
         
         assert(len(evidence_numbers)==len(evidence_text))
