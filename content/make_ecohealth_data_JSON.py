@@ -29,6 +29,7 @@ es_csv = os.path.join(work_dir, 'EcoHealthContent.xlsx')
 
 url = 'https://awseastaging.epa.gov/EcoHealthBrowser/bibliography.html'
 url = 'https://enviroatlas.epa.gov/enviroatlas/Tools/EcoHealth_RelationshipBrowser/bibliography.html'
+url = 'https://v2626umcth961.rtord.epa.gov/EcoHealth_Relationship_Browser/bibliography.html'
 
 eco_color = 'black'
 es_color = 'black'
